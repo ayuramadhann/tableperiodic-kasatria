@@ -135,7 +135,9 @@ function handleCredentialResponse(response) {
     // Send the token to your server to validate and create a session.
     // For demonstration, we'll decode the token and display user info.
     const responsePayload = decodeJwtResponse(response.credential);
-
+    $(".g_id_signin").css("display", "none")
+    $(".data").css("display", "block")
+    
     console.log('ID: ' + responsePayload.sub);
     console.log('Full Name: ' + responsePayload.name);
     console.log('Given Name: ' + responsePayload.given_name);
