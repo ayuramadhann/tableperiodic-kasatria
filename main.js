@@ -129,6 +129,28 @@ const targets = { table: [], sphere: [], helix: [], grid: [] };
 init();
 animate();
 
+function handleCredentialResponse(response) {
+    console.log('Encoded JWT ID token: ' + response.credential);
+    // Send the token to your server to validate and create a session.
+    // For demonstration, we'll decode the token and display user info.
+    const responsePayload = decodeJwtResponse(response.credential);
+
+    console.log('Full Name: ' + responsePayload.name);
+    console.log('Email: ' + responsePayload.email);
+    $(".g_id_signin").css("display", "none")
+    $(".data").css("display", "block")
+
+}
+
+function decodeJwtResponse(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
 function init() {
 
     camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -284,7 +306,7 @@ function init() {
 
 function transform( targets, duration ) {
 
-    TWEEN.removeAll();
+    new TWEEN.removeAll();
 
     for ( let i = 0; i < objects.length; i ++ ) {
 
@@ -325,7 +347,7 @@ function animate() {
 
     requestAnimationFrame( animate );
 
-    TWEEN.update();
+    new TWEEN.update();
 
     controls.update();
 
@@ -335,28 +357,4 @@ function render() {
 
     renderer.render( scene, camera );
 
-}
-
-
-function handleCredentialResponse(response) {
-    console.log('Encoded JWT ID token: ' + response.credential);
-    // Send the token to your server to validate and create a session.
-    // For demonstration, we'll decode the token and display user info.
-    const responsePayload = decodeJwtResponse(response.credential);
-
-    console.log('Full Name: ' + responsePayload.name);
-    console.log('Email: ' + responsePayload.email);
-    $(".g_id_signin").css("display", "none")
-    $(".data").css("display", "block")
-
-}
-
-function decodeJwtResponse(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
 }
