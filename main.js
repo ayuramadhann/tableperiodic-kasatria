@@ -138,7 +138,7 @@ function handleCredentialResponse(response) {
     console.log('Full Name: ' + responsePayload.name);
     console.log('Email: ' + responsePayload.email);
     $(".g_id_signin").css("display", "none")
-    $(".data").css("display", "block")
+    $(".container").css("display", "block")
 
 }
 
